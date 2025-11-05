@@ -8,10 +8,14 @@ import { ref } from 'vue';
     <nav class="navbar">
       <div class="navbar-left">
         <div class="logo">LOGO</div>
+      </div>
+
+      <div class="navbar-center">
         <button class="nav-btn active">Pedidos</button>
         <button class="nav-btn">Dashboards</button>
         <button class="nav-btn">Produtos</button>
       </div>
+
       <div class="navbar-right">
         <button class="login-btn">Login</button>
       </div>
@@ -58,27 +62,72 @@ import { ref } from 'vue';
           </tr>
         </thead>
         <tbody>
-          <tr>
+            <tr>
+                <td>1</td>
+                <td>Thainara Marques</td>
+                <td>07/10/2025 20:27:58</td>
+                <td>
+                    <div class="suco-lista">
+                        <div class="suco-item">
+                            <img src="/imgs/suco-ameixa.png" alt="Suco de Laranja">
+                            <span>2</span>
+                        </div>
+                        <div class="suco-item">
+                            <img src="/imgs/suco-cereja.png" alt="Suco de Morango">
+                            <span>1</span>
+                        </div>
+                        <div class="suco-item">
+                            <img src="/imgs/suco-laranja.png" alt="Suco de Abacaxi">
+                            <span>3</span>
+                        </div>
+                    </div>  
+                </td>
+                <td>R$150,00</td>
+            </tr>
+            <tr>
             <td>1</td>
             <td>Thainara Marques</td>
             <td>07/10/2025 20:27:58</td>
-            <td>1</td>
+            <td>
+                <div class="suco-lista">
+                    <div class="suco-item">
+                        <img src="/imgs/suco-laranja.png" alt="Suco de Laranja">
+                        <span>2</span>
+                    </div>
+                    <div class="suco-item">
+                        <img src="/imgs/suco-morango.png" alt="Suco de Morango">
+                        <span>1</span>
+                    </div>
+                        <div class="suco-item">
+                        <img src="/imgs/suco-abacaxi.png" alt="Suco de Abacaxi">
+                    <span>3</span>
+                    </div>
+                </div>
+            </td>
             <td>R$150,00</td>
-          </tr>
-          <tr>
+        </tr>
+            <tr>
             <td>1</td>
             <td>Thainara Marques</td>
             <td>07/10/2025 20:27:58</td>
-            <td>4</td>
+            <td>
+                <div class="suco-lista">
+                    <div class="suco-item">
+                        <img src="/imgs/suco-laranja.png" alt="Suco de Laranja">
+                        <span>2</span>
+                    </div>
+                    <div class="suco-item">
+                        <img src="/imgs/suco-morango.png" alt="Suco de Morango">
+                        <span>1</span>
+                    </div>
+                        <div class="suco-item">
+                        <img src="/imgs/suco-abacaxi.png" alt="Suco de Abacaxi">
+                    <span>3</span>
+                    </div>
+                </div>
+            </td>
             <td>R$150,00</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Thainara Marques</td>
-            <td>07/10/2025 20:27:58</td>
-            <td>0</td>
-            <td>R$150,00</td>
-          </tr>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -106,6 +155,14 @@ import { ref } from 'vue';
   border-radius: 0 0 15px 15px;
 }
 
+.navbar-center {
+ position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+}
+
 .logo {
   font-weight: 700;
   color: #2b3b58;
@@ -117,7 +174,6 @@ import { ref } from 'vue';
   border: none;
   color: #2b3b58;
   font-size: 15px;
-  margin-right: 20px;
   cursor: pointer;
   transition: 0.3s;
 }
