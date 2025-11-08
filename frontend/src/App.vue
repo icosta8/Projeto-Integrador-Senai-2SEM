@@ -1,36 +1,48 @@
 <template>
   <div id="app-wrapper">
-    <!-- Navbar em todas as páginas -->
-    <AppNavbar />
+    <AppNavbar v-if="!isAdminRoute" />
     
     <main>
-      <!-- O conteúdo da página (Home, Detalhes, etc.) é renderizado aqui -->
       <router-view />
     </main>
     
-    <!-- ADICIONADO: Rodapé em todas as páginas -->
-    <AppFooter />
+    <AppFooter v-if="!isAdminRoute" />
   </div>
 </template>
 
 <script setup>
+// --- NOVAS IMPORTAÇÕES ---
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
 // Importa os componentes principais
 import AppNavbar from '@/components/AppNavbar.vue';
-// --- ADICIONE ESTA LINHA ---
 import AppFooter from '@/components/AppFooter.vue';
+
+// --- LÓGICA ADICIONADA ---
+
+// Pega as informações da rota atual
+const route = useRoute()
+
+// Cria uma variável "computada" (que se atualiza sozinha)
+// Ela será 'true' se a URL atual (route.path) começar com '/admin'
+const isAdminRoute = computed(() => {
+  return route.path.startsWith('/admin')
+})
 </script>
 
 <style>
-/* Estilos globais (sem 'scoped') */
+/* Seus estilos globais continuam aqui */
 body {
   margin: 0;
-  /* Você estava usando Poppins antes, mas mudamos para Montserrat.
-    Vamos manter Montserrat, que está no seu style.css
-  */
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f4f4f4; /* Cor de fundo caso a imagem não carregue */
+  /* O fundo gradiente do admin já está no style.css, 
+    então podemos manter o seu fundo original aqui ou mover tudo 
+    para o style.css 
+  */
+  background-color: #f4f4f4; 
 }
 
 * {
@@ -38,14 +50,12 @@ body {
 }
 
 #app-wrapper {
-  /* Isso ajuda a "empurrar" o rodapé para baixo em páginas curtas */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
 main {
-  /* O conteúdo principal cresce para preencher o espaço */
   flex-grow: 1;
 }
 </style>
