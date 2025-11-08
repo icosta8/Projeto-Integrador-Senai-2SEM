@@ -1,25 +1,20 @@
 <template>
-  <!-- Usamos um container para centralizar e adicionar margem -->
   <div class="nav-container">
     <nav class="navbar">
       
-      <!-- MODIFICADO: Agora o logo é um link para a Home -->
       <router-link :to="{ name: 'home' }" class="logo-link">
         <div class="logo">LOGO</div>
       </router-link>
       
       <ul class="nav-links">
         <li>
-          <!-- MODIFICADO: "Home" agora é um router-link -->
           <router-link :to="{ name: 'home' }" class="nav-link">
             Home
           </router-link>
         </li>
         <li>
-          <!-- Mantido como <a> pois a rota "sobre-nos" não foi criada -->
           <a href="#" class="nav-link">Sobre nós</a>
         </li>
-        <!-- Container do Dropdown "Sabores" -->
         <li class="dropdown-container" ref="dropdownRef">
           <a href="#" class="nav-link" @click.prevent="toggleDropdown">
             Sabores 
@@ -28,7 +23,6 @@
             </svg>
           </a>
           
-          <!-- Menu Dropdown com <router-link> (Já estava correto) -->
           <ul class="dropdown-menu" v-if="isDropdownOpen">
             <li>
               <router-link :to="{ name: 'product-detail', params: { id: 'cereja' } }" class="dropdown-link">
@@ -50,13 +44,14 @@
       </ul>
       
       <div class="nav-actions">
-        <!-- Ícone do carrinho -->
         <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2c3e50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
         </svg>
         
-        <button class="login-btn">Login</button>
+        <RouterLink :to="{ name: 'login' }" class="login-btn">
+          Login
+        </RouterLink>
       </div>
 
     </nav>
@@ -64,7 +59,9 @@
 </template>
 
 <script setup>
+// --- ADICIONE 'RouterLink' AQUI ---
 import { ref, onMounted, onUnmounted } from 'vue';
+import { RouterLink } from 'vue-router';
 
 // Lógica para controlar o estado do dropdown
 const isDropdownOpen = ref(false);
@@ -187,6 +184,10 @@ onUnmounted(() => {
   stroke: #2c3e50;
 }
 
+/* *** MUDANÇA PRINCIPAL NO CSS ***
+  O RouterLink se torna uma tag <a>, então adicionamos 
+  'text-decoration: none' para remover o sublinhado.
+*/
 .login-btn {
   background-color: #F97316;
   color: white;
@@ -198,6 +199,7 @@ onUnmounted(() => {
   font-size: 0.9em;
   transition: background-color 0.3s ease;
   font-family: "Montserrat", sans-serif; 
+  text-decoration: none; /* <-- ADICIONE ISTO */
 }
 
 .login-btn:hover {
@@ -246,4 +248,3 @@ onUnmounted(() => {
   background-color: #f4f4f4;
 }
 </style>
-

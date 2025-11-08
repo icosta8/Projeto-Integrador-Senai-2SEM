@@ -1,10 +1,8 @@
 <template>
   <div class="home-page">
     
-    <!-- 1. A IMAGEM DE FUNDO AGORA É UM ELEMENTO REAL -->
     <img :src="backgroundImage" alt="Sweet Juices Homepage" class="full-page-image" />
 
-    <!-- 2. Os cards de suco, posicionados sobre a imagem -->
     <div class="juice-cards-container">
       
       <router-link :to="{ name: 'product-detail', params: { id: 'ameixa' } }" class="product-link">
@@ -31,15 +29,13 @@
         />
       </router-link>
 
-      <AppFooter />
-
-    </div>
+      </div>
   </div>
 </template>
 
 <script setup>
 import ProductCard from '../components/ProductCard.vue';
-import AppFooter from '@/components/AppFooter.vue';
+// import AppFooter from '@/components/AppFooter.vue'; <-- REMOVIDO DAQUI
 
 // Importe a imagem de fundo principal
 import backgroundImage from '../assets/homepage-background.png';

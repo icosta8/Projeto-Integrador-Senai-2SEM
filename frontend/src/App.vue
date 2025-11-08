@@ -1,17 +1,16 @@
 <template>
   <div id="app-wrapper">
-    <AppNavbar v-if="!isAdminRoute" />
+    <AppNavbar v-if="!hideMainLayout" />
     
     <main>
       <router-view />
     </main>
     
-    <AppFooter v-if="!isAdminRoute" />
+    <AppFooter v-if="!hideMainLayout" />
   </div>
 </template>
 
 <script setup>
-// --- NOVAS IMPORTAÇÕES ---
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -19,29 +18,31 @@ import { useRoute } from 'vue-router'
 import AppNavbar from '@/components/AppNavbar.vue';
 import AppFooter from '@/components/AppFooter.vue';
 
-// --- LÓGICA ADICIONADA ---
-
 // Pega as informações da rota atual
 const route = useRoute()
 
-// Cria uma variável "computada" (que se atualiza sozinha)
-// Ela será 'true' se a URL atual (route.path) começar com '/admin'
-const isAdminRoute = computed(() => {
-  return route.path.startsWith('/admin')
+// --- LÓGICA ATUALIZADA ---
+// Eu mudei o nome da variável de 'isAdminRoute' para 'hideMainLayout'
+// para ficar mais claro, e adicionei a verificação do '/login'.
+const hideMainLayout = computed(() => {
+  const path = route.path
+  
+  // Retorna 'true' (escondendo a navbar) se a rota for:
+  // 1. Qualquer rota de admin (ex: /admin/dashboard)
+  // 2. A rota exata de login (ex: /login)
+  // 3. (BÔNUS) Já adicionei a rota de cadastro que você tem no seu form
+  
+  return path.startsWith('/admin') || path === '/login' || path === '/cadastro'
 })
 </script>
 
 <style>
-/* Seus estilos globais continuam aqui */
+/* Seus estilos globais (body, *, #app-wrapper, main) ficam aqui... */
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* O fundo gradiente do admin já está no style.css, 
-    então podemos manter o seu fundo original aqui ou mover tudo 
-    para o style.css 
-  */
   background-color: #f4f4f4; 
 }
 
@@ -57,5 +58,6 @@ body {
 
 main {
   flex-grow: 1;
+  
 }
 </style>
