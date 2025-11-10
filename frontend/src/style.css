@@ -1,0 +1,23 @@
+/* src/style.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}
+:root {
+  --admin-bg: linear-gradient(135deg, #f5f7fa 0%, #e8eefc 100%);
+  --admin-primary: #8a2be2; /* Um roxo, como no protótipo */
+  --admin-secondary: #ff9800; /* Laranja do protótipo */
+  --admin-text: #333;
+  --admin-text-light: #666;
+  --admin-white: #ffffff;
+  --admin-border: #e0e4f0;
+  --admin-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --admin-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.08);
+  --admin-radius: 12px;
+  --admin-danger: #e74c3c;
+  --admin-warning: #f39c12;
+  --admin-success: #2ecc71;
+}
