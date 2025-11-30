@@ -17,14 +17,15 @@
     "dotenv-safe": "^9.1.0",
     "express": "^5.1.0",
     "fresh": "^2.0.0",
+    "helmet": "^8.1.0",
     "jsmodbus": "^4.0.10",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.1",
+    "morgan": "^1.10.1",
     "net": "^1.0.2",
     "node-opcua": "^2.157.0",
     "zod": "^4.1.12"
   },
   "type": "commonjs",
-  "description": "",
-  "devDependencies": {}
+  "description": ""
 }

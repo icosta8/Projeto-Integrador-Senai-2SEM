@@ -26,7 +26,9 @@
           <SizeSelector :sizes="availableSizes" :activeColor="product.color" />
         </div>
 
-        <button class="add-to-cart-btn" :style="{ backgroundColor: product.color }">
+        <div class="status">{{ productStatus }}</div>
+
+        <button class="add-to-cart-btn" :style="{ backgroundColor: product.color }" @click="salvarItem">
           Adicionar ao carrinho
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -34,13 +36,12 @@
           </svg>
         </button>
       </div>
-
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router'; 
 import SizeSelector from '../components/SizeSelector.vue';
 
@@ -48,8 +49,43 @@ import cherryJuiceImg from '../assets/suco_cereja.png';
 import plumJuiceImg from '../assets/suco_ameixa.png';
 import orangeJuiceImg from '../assets/suco_laranja.png';
 
+import { useSucoStore } from '../stores/produtos';
+import { useCarrinhoStore } from '../stores/carrinho';
+const carrinhoStore = useCarrinhoStore();
+const sucoStore = useSucoStore();
+const color = ref("");
+
 // 1. Pega a rota atual (este objeto é reativo)
 const route = useRoute();
+
+const productStatus = computed(() => {
+  const id = route.params.id; 
+  const index = sucoStore.sucos.findIndex(s => s.tipo === id);
+
+  if (index === -1){
+    return "Desconhecido";
+  }
+  return sucoStore.statusSuco[index];
+});
+
+watch(productStatus, (status) => {
+  if(!status) return;
+  if (status === "Estoque Esgotado") {
+    color.value = "#7B4DAB";
+  } else if (status === "Finalizado") {
+    color.value = "#27ae60";
+  } else {
+    color.value = "#999"; // Em produção
+  }
+}, { immediate: true });
+
+async function salvarItem(){
+  const salvar = await carrinhoStore.adicionarProdutos(route.params.id, 1);
+  if(!salvar){
+    alert("Não foi possível adicionar o produto ao carrinho.");
+  }
+  alert("Produto adicionado ao carrinho!");
+} 
 
 // 2. Simula um banco de dados com as informações de cada suco
 const juiceData = {
@@ -84,9 +120,10 @@ const juiceData = {
 // O 'product' agora "assiste" o 'route.params.id'.
 // Quando a URL mudar, esta função computed será executada
 // automaticamente e pegará os novos dados.
+
 const product = computed(() => {
-  const id = route.params.id; // Pega o ID atual da URL
-  return juiceData[id] || juiceData.cereja; // Retorna os dados corretos
+  const id = route.params.id;
+  return juiceData[id] || juiceData.cereja;
 });
 
 // Dados dos tamanhos

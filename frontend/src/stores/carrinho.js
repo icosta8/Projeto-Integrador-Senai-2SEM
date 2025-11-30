@@ -83,6 +83,14 @@ export const useCarrinhoStore = defineStore('carrinho', {
       )
     },
 
+    atualizarQuantidade(id, quantidade) {
+      const item = this.carrinho.find(item => item.id === id)
+      if (item) {
+        item.quantidade = quantidade
+        this.salvarCarrinho()
+      }
+    },
+
     // Finaliza o pedido e obtém o recibo do backend
     async finalizarPedido() {
       try {

@@ -8,7 +8,8 @@ export const useSucoStore = defineStore('suco', {
     status: ['Em produção', 'Finalizado', 'Estoque Esgotado'],
     pedirSuco: false,
     loading: false,
-    mensagem: null
+    mensagem: null,
+    pedidoRealizado: false
   }),
 
   getters: {
@@ -26,7 +27,7 @@ export const useSucoStore = defineStore('suco', {
       try {
         // Carrega a lista de sucos do backend
         this.loading = true;
-        const res = await axios.get('/api/sucos/procurar-suco');
+        const res = await axios.get('http://localhost:3000/api/sucos/procurar-suco');
         this.sucos = res.data;
       } catch (err) {
         console.error('Erro ao carregar sucos:', err);
@@ -45,7 +46,7 @@ export const useSucoStore = defineStore('suco', {
         const suco = this.sucos.find(s => s.tipo === tipo);
         if (!suco) throw new Error('Suco não encontrado!');
 
-        const res = await axios.post('/api/sucos/pedir-suco', {
+        const res = await axios.post('http://localhost:3000/api/sucos/pedir-suco', {
           tipo,
           preco: suco.preco,
           quantidade
@@ -53,7 +54,7 @@ export const useSucoStore = defineStore('suco', {
          
         this.atualizarEstoque(tipo, quantidade);
 
-        this.pedirSuco = true;
+        this.pedidoRealizado = true;
         this.mensagem = res.data.message || 'Pedido realizado com sucesso!';
       } catch (err) {
         this.mensagem = err.response?.data?.error || 'Erro ao pedir suco.';

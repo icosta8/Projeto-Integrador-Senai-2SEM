@@ -1,6 +1,47 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useUsuarioStore } from '../stores/usuario';
+import { useChartStore } from '../stores/kpi';
+import { useSucoStore } from '../stores/produtos';
+
+const store = useUsuarioStore();
+const chartStore = useChartStore();
+const sucos = useSucoStore();
+
+
+const saudacao = ref('');
+const pedidosPendentes = ref(0);
+const totalPedidos = ref(0);
+const totalLucro = ref('');
+
+
+const usuarioLength = computed(() => store.usuario ? store.usuario.nome.length : 0);
+
+
+function calcularLucro(pedidos) {
+  let total = 0;
+  for (let i = 0; i < pedidos.length; i++) {
+    total += pedidos[i] + 2;
+  }
+  return `R$${total},00`;
+}
+
+onMounted(async () => {
+  // Saudação
+  saudacao.value = store.usuario ? `Olá, ${store.usuario.nome}!` : 'Olá!';
+
+  // Pedidos pendentes
+  pedidosPendentes.value = sucos.status?.pendente?.length || 0;
+
+  // Compras realizadas
+  const pedidos = await chartStore.pecasBoas; 
+  totalPedidos.value = pedidos.length;
+
+  // Lucro
+  totalLucro.value = calcularLucro(pedidos);
+});
 </script>
+
 
 <template>
   <div class="page-container">
@@ -23,29 +64,29 @@ import { ref } from 'vue';
 
     <!-- SAUDAÇÃO -->
     <div class="greeting">
-        <h2 class="greeting-text">Olá Gabriela!</h2>
+        <h2 class="greeting-text">{{ saudacao }}</h2>
     </div>
 
     <!-- CARDS SUPERIORES -->
     <div class="info-grid">
       <div class="info-card">
         <p class="card-title">Pedidos pendentes</p>
-        <p class="card-value">15</p>
+        <p class="card-value">{{ pedidosPendentes }}</p>
         <p class="card-sub">Na última semana</p>
       </div>
       <div class="info-card">
         <p class="card-title">Usuários novos</p>
-        <p class="card-value">28</p>
+        <p class="card-value">{{ usuarioLength }}</p>
         <p class="card-sub">Na última semana</p>
       </div>
       <div class="info-card">
         <p class="card-title">Compras realizadas</p>
-        <p class="card-value">46</p>
+        <p class="card-value">{{ totalPedidos }}</p>
         <p class="card-sub">Na última semana</p>
       </div>
       <div class="info-card">
         <p class="card-title">Lucro</p>
-        <p class="card-value">R$ 8.563,56</p>
+        <p class="card-value">{{ totalLucro }}</p>
       </div>
     </div>
 

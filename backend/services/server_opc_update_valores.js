@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { lerTags } = require("./server_opc_client");
 const ClpData = require("../models/CLP");
+const cache = require('../services/clp_cache');
 
 const MONGO_URL = "mongodb://localhost:27017/projetoIntegrador";
 const INTERVALO_MS = 5000; // tempo entre leituras (5 segundos)
@@ -19,15 +20,20 @@ async function iniciarOPCService() {
 
         for (const db in dados) {
           for (const tag in dados[db]) {
+            const chave = `"${db}"."${tag}"`;
+            const valor = dados[db][tag];
+            cache.valores[chave] = valor;
+
             registros.push({
               db,
               tag,
-              value: dados[db][tag]
+              value: valor
             });
           }
         }
 
-        await ClpData.insertMany(registros);
+        //await ClpData.insertMany(registros) - No banco aparece value: null;
+        await ClpData.insertOne(registros);
         console.log("Tags registradas:", new Date().toLocaleTimeString());
 
       } catch (err) {

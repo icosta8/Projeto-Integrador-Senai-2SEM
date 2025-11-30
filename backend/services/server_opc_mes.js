@@ -4,7 +4,7 @@ const { conectarOPCUA, desconectarOPCUA } = require("./server_opc_conexao");
 const { lerTags } = require("./server_opc_client");
 function mapearNodeId(db, tag) {
     const tagInfo = tagsCLP[db][tag];
-    return `ns=${tagInfo.ns};s=${tag}`;
+    return `ns=${tagInfo.ns};s="${db}"."${tag}"`;
 }
 
 // Função principal de subscribe
@@ -19,7 +19,7 @@ async function monitorarFimCiclo(fimCiclo) {
             publishingEnabled: true
         });
 
-        const nodeId = mapearNodeId("DB_ack", "ack.fimACK");
+        const nodeId = mapearNodeId("ack", "fimACK");
 
         const monitoredItem = await subscription.monitor(
             { nodeId, attributeId: opcua.AttributeIds.Value },
@@ -50,7 +50,7 @@ async function monitorarFimCiclo(fimCiclo) {
 }
 
 function fimCiclo(dados) {
-    console.log("Dados do fim de ciclo:", dados.DB_status, dados.DB_pedido);
+    console.log("Dados do fim de ciclo:", dados.status, dados.pedido);
 }
 
 module.exports = { monitorarFimCiclo, fimCiclo };

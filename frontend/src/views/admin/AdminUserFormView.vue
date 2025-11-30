@@ -1,14 +1,15 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-
+import { useUsuarioStore } from '../stores/usuario'
+const store = useUsuarioStore()
 const router = useRouter()
 
 // Refs para o formulário
 const name = ref('')
 const email = ref('')
 const password = ref('')
-const role = ref('Cliente') // Valor padrão
+const role = ref('cliente') // Valor padrão
 
 const handleSubmit = () => {
   console.log('Salvando novo usuário:', {
@@ -17,6 +18,13 @@ const handleSubmit = () => {
     password: password.value, // (Em um app real, o backend faria o hash)
     role: role.value
   })
+  store.register({
+    name: name.value,
+    email: email.value,
+    password: password.value,
+    role: role.value
+  })
+
   router.push({ name: 'AdminUsuarios' })
 }
 

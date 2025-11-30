@@ -1,37 +1,37 @@
 const tagsCLP = {
-  "DB_status": {
-    "status.geral": {"ns": 3, "type": "Int"},
-    "status.falhaAtiva": {"ns": 3, "type": "Boolean"},
-    "status.falhaAtivaCod": {"ns": 3, "type": "Int"},
-    "status.accSinc": {"ns": 3, "type": "UInt"},
-    "status.opAtual": {"ns": 3, "type": "DoubleInteger"},
-    "status.estoqueProd": {"ns": 3, "type": "Array[Int]"},
-    "status.mesProd": {"ns": 3, "type": "Int"},
-    "status.mesFalt": {"ns": 3, "type": "Int"},
-    "status.mesUltimoCiclo": {"ns": 3, "type": "Real"},
-    "status.mesTempInicio": {"ns": 3, "type": "DateTime"},
-    "status.mesTempFim": {"ns": 3, "type": "DateTime"},
-    "status.mesPCsBoas": {"ns": 3, "type": "Int"},
-    "status.mesPCsRuins": {"ns": 3, "type": "Int"}
+  "status": {
+    "geral": {"ns": 3, "type": "Int16"},
+    "falhaAtiva": {"ns": 3, "type": "Boolean"},
+    "falhaAtivaCod": {"ns": 3, "type": "Int16"},
+    "accSinc": {"ns": 3, "type": "Int32"},
+    "opAtual": {"ns": 3, "type": "DoubleInteger"},
+    "estoqueProd": {"ns": 3, "type": "Array[Int16]"},
+    "mesProd": {"ns": 3, "type": "Int16"},
+    "mesFalt": {"ns": 3, "type": "Int16"},
+    "mesUltimoCiclo": {"ns": 3, "type": "Real"},
+    "mesTempInicio": {"ns": 3, "type": "DateTime"},
+    "mesTempFim": {"ns": 3, "type": "DateTime"},
+    "mesPCsBoas": {"ns": 3, "type": "Int16"},
+    "mesPCsRuins": {"ns": 3, "type": "Int16"}
   },
-  "DB_ack": {
-    "ack.pedidoACK": {"ns": 3, "type": "Boolean"},
-    "ack.aplicaACK": {"ns": 3, "type": "Boolean"},
-    "ack.inicioACK": {"ns": 3, "type": "Boolean"},
-    "ack.execACK": {"ns": 3, "type": "Boolean"},
-    "ack.fimACK": {"ns": 3, "type": "Boolean"},
-    "ack.falhaACK": {"ns": 3, "type": "Boolean"}
+  "ack": {
+    "pedidoACK": {"ns": 3, "type": "Boolean"},
+    "aplicaACK": {"ns": 3, "type": "Boolean"},
+    "inicioACK": {"ns": 3, "type": "Boolean"},
+    "execACK": {"ns": 3, "type": "Boolean"},
+    "fimACK": {"ns": 3, "type": "Boolean"},
+    "falhaACK": {"ns": 3, "type": "Boolean"}
   },
-  "DB_pedido": {
-    "pedido.op": {"ns": 3, "type": "DoubleInteger"},
-    "pedido.produto": {"ns": 3, "type": "Int"},
-    "pedido.quant": {"ns": 3, "type": "Int"}
+  "pedido": {
+    "op": {"ns": 3, "type": "DoubleInteger"},
+    "produto": {"ns": 3, "type": "Int16"},
+    "quant": {"ns": 3, "type": "Int16"}
   },
-  "DB_cmd": {
-    "cmd.novoPed": {"ns": 3, "type": "Boolean"},
-    "cmd.inicio": {"ns": 3, "type": "Boolean"},
-    "cmd.abortar": {"ns": 3, "type": "Boolean"},
-    "cmd.reset": {"ns": 3, "type": "Boolean"}
+  "cmd": {
+    "novoPed": {"ns": 3, "type": "Boolean"},
+    "inicio": {"ns": 3, "type": "Boolean"},
+    "abortar": {"ns": 3, "type": "Boolean"},
+    "reset": {"ns": 3, "type": "Boolean"}
   }
 }
 module.exports = tagsCLP;

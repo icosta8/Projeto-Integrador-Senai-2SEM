@@ -1,91 +1,76 @@
 <template>
-  <div class="container">
-    <div class="form-section">
-      <div class="form-wrapper">
-        <h1>Seja Bem-Vindo!</h1>
-        <h2>Login</h2>
-
-        <form @submit.prevent="handleLogin">
-          <div class="form-group">
-            <label for="email">E-mail ou usuário:</label>
-            <input 
-              type="email" 
-              id="email" 
-              v-model="email" 
-              required 
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="senha">Senha:</label>
-            <input 
-              type="password" 
-              id="senha" 
-              v-model="password" 
-              required 
-            />
-          </div>
-
-          <div class="remember">
-            <input 
-              type="checkbox" 
-              id="idRemember" 
-              v-model="rememberMe" 
-            />
-            <label for="idRemember">Lembrar minha senha</label>
-          </div>
-
-          <button type="submit">Entrar</button>
-
-          <p class="register">
-            Não possui conta? 
-            <RouterLink to="/cadastro">Cadastre-se</RouterLink>
-          </p>
-        </form>
-      </div>
+    <div class="container">
+        <div class="form-section">
+            <div class="form-wrapper">
+                <h1>Crie sua Conta!</h1>
+                <h2>Cadastro</h2>
+                <form @submit.prevent="handleCadastro">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo:</label>
+                        <input 
+                            type="text" 
+                            id="nome" 
+                            v-model="nome" 
+                            required 
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail:</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            v-model="email" 
+                            required 
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">Senha:</label>
+                        <input 
+                            type="password" 
+                            id="senha" 
+                            v-model="password" 
+                            required 
+                        />
+                    </div>
+                    <button type="submit">Cadastrar</button>
+                    <p class="login">
+                        Já possui conta? 
+                        <RouterLink to="/login">Faça Login</RouterLink>
+                    </p>
+                </form>
+            </div>
+        </div>
+        <div class="image-section">
+            <img src="/src/assets/loginsucos.png" alt="Sucos"/>
+        </div>
     </div>
-
-    <div class="image-section">
-      <img src="/src/assets/loginsucos.png" alt="Sucos" />
-    </div>
-  </div>
 </template>
-
 <script setup>
 import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-
-// Refs para os dados do formulário
+import { useUsuarioStore } from '../stores/usuario'
+const nome = ref('')
 const email = ref('')
 const password = ref('')
-const rememberMe = ref(false)
-import {useUsuarioStore} from "../stores/usuario"
-const store = useUsuarioStore();
+const store = useUsuarioStore()
 const router = useRouter()
 
-// Função para lidar com o login
-async function handleLogin() {
-  try{
-    const dados = {
-      email: email.value,
-      password: password.value,
-      tipo_usuario: 'cliente'
+async function handleCadastro() {
+    try {
+        const dados = {
+            nome: nome.value,
+            email: email.value,
+            password: password.value,
+            tipo_usuario: 'cliente'
+        }
+        await store.register(dados)
+    } catch (error) {
+        console.error('Erro no cadastro:', error)
     }
-    await store.login(dados)
-    if(store.usuario.role === 'admin'){
-      router.push({ name: 'AdminDashboard' })
-    }else{
-      router.push({ name: 'home' })
+    const confirm = await store.showAlert('Cadastro realizado com sucesso! Faça login para continuar.')
+    if (confirm) {
+        router.push({ name: 'login' })
     }
-    alert('Login realizado com sucesso!')
-    console.log(`Usuário logado: ${store.usuario}`)
-  //console.log('Login:', email.value, password.value, rememberMe.value)
-  // Futuramente, você pode redirecionar para o admin aqui:
-  // router.push({ name: 'AdminDashboard' })
-  }catch(err){
-    alert('Falha no login: ' + err.message)
-    console.error(`Erro ao fazer login: ${err.message}`)
-  }
 }
 </script>
 
@@ -146,6 +131,7 @@ form {
 }
 
 input[type="email"],
+input[type="text"],
 input[type="password"] {
   width: 100%; /* Corrigido de 80% */
   padding: 14px 20px; /* Mais padding interno */
@@ -159,6 +145,7 @@ input[type="password"] {
 
 /* Efeito de Foco */
 input[type="email"]:focus,
+input[type="text"]:focus,
 input[type="password"]:focus {
   border-color: #ff8c1a;
   box-shadow: 0 0 0 3px rgba(255, 140, 26, 0.2);
@@ -197,17 +184,17 @@ button:hover {
   box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3);
 }
 
-.register {
+.login {
   text-align: center; /* Centralizado */
   font-size: 15px;
 }
 
-.register a {
+.login a {
   color: #ff8c1a;
   font-weight: bold;
   text-decoration: none;
 }
-.register a:hover {
+.login a:hover {
   text-decoration: underline;
 }
 

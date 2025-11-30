@@ -1,17 +1,34 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Search, Plus, Edit, Trash2 } from 'lucide-vue-next'
+import { useUsuarioStore } from '../stores/usuario'
+const store = useUsuarioStore()
 
 // Dados de exemplo
-const users = ref([
+`const users = ref([
   { id: 1, name: 'Gabriela Pereira', email: 'gabriela@email.com', role: 'Admin', joined: '10/08/2025' },
   { id: 2, name: 'Thainara Marques', email: 'thainara@email.com', role: 'Cliente', joined: '07/10/2025' },
   { id: 3, name: 'Isaque Costa', email: 'isaque@email.com', role: 'Cliente', joined: '07/10/2025' },
   { id: 4, name: 'Kauã Rodrigues', email: 'kaua@email.com', role: 'Cliente', joined: '07/10/2025' },
-])
+])`
 
 const searchQuery = ref('')
+
+onMounted(() => {
+  store.carregarUsuario()
+})
+
+const usersFiltrados = computed(() => {
+  return store.usuarios.filter(user => {
+    const termo = searchQuery.value.toLowerCase()
+    return (
+      user.name.toLowerCase().includes(termo) ||
+      user.email.toLowerCase().includes(termo)
+    )
+  })
+})
+
 </script>
 
 <template>
@@ -49,7 +66,7 @@ const searchQuery = ref('')
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in users" :key="user.id">
+            <tr v-for="user in usersFiltrados" :key="user.id">
               <td>#{{ user.id }}</td>
               <td>{{ user.name }}</td>
               <td>{{ user.email }}</td>

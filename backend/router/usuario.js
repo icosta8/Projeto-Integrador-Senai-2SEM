@@ -5,8 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const { z } = require('zod');
-let carrinho = [];
-let reciboPedido = null;
+const permit = require('../middleware/permit');
 
 const registroSchema = z.object({
   nome: z.string().min(2),
@@ -79,7 +78,7 @@ router.get('/me', auth, async (req, res) => {
   return res.json({ usuario: req.usuario });
 });
 
-router.post('/cadastrar-usuario', async (req, res) => {
+router.post('/cadastrar-usuario', auth, permit('admin'), async (req, res) => {
   try {
     const { nome, email, password } = req.body;
     if (!nome || !email || !password) {
@@ -93,7 +92,7 @@ router.post('/cadastrar-usuario', async (req, res) => {
   }
 });
 
-router.get('/usuarios-cadastrados', async (req, res) => {
+router.get('/usuarios-cadastrados',auth, permit('admin'), async (req, res) => {
   try {
     const usuarios = await Usuario.find();
     res.status(200).json(usuarios);
@@ -102,7 +101,7 @@ router.get('/usuarios-cadastrados', async (req, res) => {
   }
 });
 
-router.get('/procurar-usuario/:id', async (req, res) => {
+router.get('/procurar-usuario/:id', auth, permit('admin'), async (req, res) => {
   try {
     const usuario = await Usuario.findById(req.params.id);
     if (!usuario) {
@@ -114,8 +113,14 @@ router.get('/procurar-usuario/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   try {
+    const usuarioLogado = req.usuario;
+    
+    if(usuarioLogado.role !== 'admin' && usuarioLogado.sub !== req.params.id){
+      return res.status(403).json({ error: 'Você não pode editar outro usuário.'});
+    }
+
     const { nome, email, password } = req.body;
     const dadosAtualizados = { nome, email };
 
@@ -134,7 +139,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, permit('admin'), async (req, res) => {
   try {
     const usuarioDeletado = await Usuario.findByIdAndDelete(req.params.id);
     if (!usuarioDeletado) {
@@ -155,15 +160,21 @@ router.post('/adicionar', (req, res) => {
     return res.status(400).json({ error: "Campos obrigatórios ausentes." });
   }
 
+  const userId = req.usuario.sub;
+
+  if(!carrinho[userId]){
+    carrinho[userId] = [];
+  } 
+
   const item = { produtoId, tipo, preco, quantidade, total: preco * quantidade };
-  carrinho.push(item);
+  carrinho[userId].push(item);
   reciboPedido = { ...item, data: new Date().toLocaleString() };
 
   res.json({ message: "Produto adicionado com sucesso!", carrinho });
 });
 
 router.post('/limpar', (req, res) => {
-  carrinho = [];
+  carrinho = {};
   reciboPedido = null;
   res.json({ message: "Carrinho esvaziado!" });
 });

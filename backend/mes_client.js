@@ -4,7 +4,7 @@ const RETRY_INTERVAL = 5000;
 
 async function enviarParaMES(dados) {
     try { 
-        await axios.post("http://localhost:4840/mes", dados);
+        await axios.post("http://localhost:3000/api/mes/status-clp", dados);
         console.log("Dados enviados para MES com sucesso!");
     } catch (err) {
         console.error("Erro ao enviar para MES, retry em 5s...", err.message);
@@ -19,8 +19,8 @@ async function fimCiclo(dados) {
 
 (async () => {
     try {
-        const monitor = await monitorarFimCiclo(fimCicloCallback);
-        console.log("Serviço OPC-MES rodando. Monitorando ack.fimACK...");
+        const monitor = await fimCiclo(fimCicloCallback);
+        console.log("Serviço OPC-MES rodando. Monitorando ack.fimACK...", monitor);
     } catch (err) {
         console.error("Erro ao iniciar serviço OPC-MES:", err.message);
     }

@@ -57,7 +57,7 @@ export const useChartStore = defineStore('chart', {
 
     async carregarDadosMES() {
       try {
-        const resposta = await axios.get('http://localhost:3000/api/mes/dados') // rota do backend MES
+        const resposta = await axios.get('http://localhost:3000/api/mes/consultar-estoque') // rota do backend MES
         const dados = await resposta.json()
         this.atualizarGraficos(dados)
         this.conectadoMES = true

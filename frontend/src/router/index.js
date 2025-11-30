@@ -5,7 +5,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 // --- Suas Views de Cliente ---
 import HomeView from '../views/HomeView.vue'
 import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
+import Carrinho from '../views/carrinho.vue'
 
 // --- Novas Views e Layout de Admin ---
 import AdminLayout from '../components/admin/AdminLayout.vue'
@@ -31,10 +33,21 @@ const routes = [
     component: Login
   },
   {
+    path: '/cadastro',
+    name: 'register',
+    component: Register
+  },
+  {
     path: '/produto/:id',
     name: 'product-detail',
     component: ProductDetailView,
     props: true
+  },
+
+  {
+    path: '/carrinho',
+    name: 'carrinho',
+    component: Carrinho
   },
 
   // --- NOVAS ROTAS DE ADMIN ---

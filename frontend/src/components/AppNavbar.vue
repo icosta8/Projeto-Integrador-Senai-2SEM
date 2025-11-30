@@ -1,3 +1,4 @@
+
 <template>
   <div class="nav-container">
     <nav class="navbar">
@@ -8,50 +9,45 @@
       
       <ul class="nav-links">
         <li>
-          <router-link :to="{ name: 'home' }" class="nav-link">
-            Home
-          </router-link>
+          <router-link :to="{ name: 'home' }" class="nav-link">Home</router-link>
         </li>
         <li>
           <a href="#" class="nav-link">Sobre nós</a>
         </li>
+
         <li class="dropdown-container" ref="dropdownRef">
           <a href="#" class="nav-link" @click.prevent="toggleDropdown">
             Sabores 
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="chevron-down" :class="{ 'rotated': isDropdownOpen }">
-              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg width="12" height="12" viewBox="0 0 24 24" class="chevron-down"
+                 :class="{ rotated: isDropdownOpen }">
+              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2.5"/>
             </svg>
           </a>
-          
+
           <ul class="dropdown-menu" v-if="isDropdownOpen">
-            <li>
-              <router-link :to="{ name: 'product-detail', params: { id: 'cereja' } }" class="dropdown-link">
-                Cereja
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="{ name: 'product-detail', params: { id: 'laranja' } }" class="dropdown-link">
-                Laranja
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="{ name: 'product-detail', params: { id: 'ameixa' } }" class="dropdown-link">
-                Ameixa
-              </router-link>
-            </li>
+            <li><router-link :to="{ name: 'product-detail', params: { id: 'cereja' } }" class="dropdown-link">Cereja</router-link></li>
+            <li><router-link :to="{ name: 'product-detail', params: { id: 'laranja' } }" class="dropdown-link">Laranja</router-link></li>
+            <li><router-link :to="{ name: 'product-detail', params: { id: 'ameixa' } }" class="dropdown-link">Ameixa</router-link></li>
           </ul>
         </li>
       </ul>
       
       <div class="nav-actions">
-        <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2c3e50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
-        
+        <div v-if="!store.login">
+        <RouterLink :to="{ name: 'carrinho' }" class="cart">
+          <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+               viewBox="0 0 24 24" fill="none" stroke="#2c3e50" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </RouterLink>
+        </div>
+
         <RouterLink :to="{ name: 'login' }" class="login-btn">
           Login
         </RouterLink>
+
       </div>
 
     </nav>
@@ -62,6 +58,8 @@
 // --- ADICIONE 'RouterLink' AQUI ---
 import { ref, onMounted, onUnmounted } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useUsuarioStore } from '../stores/usuario';
+const store = useUsuarioStore();
 
 // Lógica para controlar o estado do dropdown
 const isDropdownOpen = ref(false);
@@ -182,6 +180,7 @@ onUnmounted(() => {
   cursor: pointer;
   color: #2c3e50;
   stroke: #2c3e50;
+  display: flex;
 }
 
 /* *** MUDANÇA PRINCIPAL NO CSS ***

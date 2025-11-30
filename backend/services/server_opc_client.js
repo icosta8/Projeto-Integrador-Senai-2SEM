@@ -4,7 +4,7 @@ const { conectarOPCUA, desconectarOPCUA } = require("./server_opc_conexao");
 
 function mapearNodeId(db, tag) {
     const tagInfo = tagsCLP[db][tag];
-    return `ns=${tagInfo.ns};s=${tag}`;
+    return `ns=${tagInfo.ns};s="${db}"."${tag}"`;
 }
 
 async function lerTags() {
