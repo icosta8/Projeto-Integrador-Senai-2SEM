@@ -64,7 +64,7 @@ const filteredProducts = computed(() => {
 
     <section class="products-grid">
       <AdminProductCard
-        v-for="product in products"
+        v-for="product in filteredProducts"
         :key="product.id"
         :product="product"
       />

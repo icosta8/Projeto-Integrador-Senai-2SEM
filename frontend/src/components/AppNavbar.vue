@@ -8,50 +8,54 @@
       
       <ul class="nav-links">
         <li>
-          <router-link :to="{ name: 'home' }" class="nav-link">
-            Home
-          </router-link>
+          <router-link :to="{ name: 'home' }" class="nav-link">Home</router-link>
         </li>
         <li>
           <a href="#" class="nav-link">Sobre nós</a>
         </li>
+
         <li class="dropdown-container" ref="dropdownRef">
           <a href="#" class="nav-link" @click.prevent="toggleDropdown">
             Sabores 
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="chevron-down" :class="{ 'rotated': isDropdownOpen }">
-              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg width="12" height="12" viewBox="0 0 24 24" class="chevron-down"
+                  :class="{ rotated: isDropdownOpen }">
+              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2.5"/>
             </svg>
           </a>
-          
+
           <ul class="dropdown-menu" v-if="isDropdownOpen">
-            <li>
-              <router-link :to="{ name: 'product-detail', params: { id: 'cereja' } }" class="dropdown-link">
-                Cereja
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="{ name: 'product-detail', params: { id: 'laranja' } }" class="dropdown-link">
-                Laranja
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="{ name: 'product-detail', params: { id: 'ameixa' } }" class="dropdown-link">
-                Ameixa
-              </router-link>
-            </li>
+            <li><router-link :to="{ name: 'product-detail', params: { id: 'cereja' } }" class="dropdown-link">Cereja</router-link></li>
+            <li><router-link :to="{ name: 'product-detail', params: { id: 'laranja' } }" class="dropdown-link">Laranja</router-link></li>
+            <li><router-link :to="{ name: 'product-detail', params: { id: 'ameixa' } }" class="dropdown-link">Ameixa</router-link></li>
           </ul>
         </li>
       </ul>
       
       <div class="nav-actions">
-        <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2c3e50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
-        
-        <RouterLink :to="{ name: 'login' }" class="login-btn">
+        <!-- Carrinho: Visível apenas se o usuário estiver logado E for um cliente -->
+        <div v-if="store.isCliente && store.usuario">
+          <RouterLink :to="{ name: 'carrinho' }" class="cart">
+            <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="#2c3e50" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+          </RouterLink>
+        </div>
+
+        <!-- Lógica de Login/Logout -->
+        <button 
+          v-if="store.usuario" 
+          @click="handleLogout" 
+          class="login-btn logout-btn"
+        >
+          Sair
+        </button>
+        <RouterLink v-else :to="{ name: 'login' }" class="login-btn">
           Login
         </RouterLink>
+
       </div>
 
     </nav>
@@ -59,9 +63,13 @@
 </template>
 
 <script setup>
-// --- ADICIONE 'RouterLink' AQUI ---
 import { ref, onMounted, onUnmounted } from 'vue';
 import { RouterLink } from 'vue-router';
+// Importa o useUsuarioStore
+import { useUsuarioStore } from '../stores/usuario'; 
+
+// Cria a instância da store
+const store = useUsuarioStore(); 
 
 // Lógica para controlar o estado do dropdown
 const isDropdownOpen = ref(false);
@@ -78,6 +86,11 @@ const handleClickOutside = (event) => {
   }
 };
 
+// Nova função para lidar com o logout
+const handleLogout = () => {
+    store.logout(); 
+};
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
@@ -88,7 +101,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ... (estilos da navbar, etc. não mudam) ... */
 .nav-container {
   position: absolute;
   top: 20px;
@@ -114,7 +126,6 @@ onUnmounted(() => {
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* ADICIONADO: Estilo para o link do logo */
 .logo-link {
   text-decoration: none;
 }
@@ -158,7 +169,6 @@ onUnmounted(() => {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* ADICIONADO: Estilo de "ativo" para o router-link da Home */
 .nav-link.router-link-active,
 .nav-link.router-link-exact-active {
   background-color: #ffffff;
@@ -182,13 +192,11 @@ onUnmounted(() => {
   cursor: pointer;
   color: #2c3e50;
   stroke: #2c3e50;
+  display: flex;
 }
 
-/* *** MUDANÇA PRINCIPAL NO CSS ***
-  O RouterLink se torna uma tag <a>, então adicionamos 
-  'text-decoration: none' para remover o sublinhado.
-*/
 .login-btn {
+  /* Estilo base (usado para Login) */
   background-color: #F97316;
   color: white;
   border: none;
@@ -197,13 +205,23 @@ onUnmounted(() => {
   cursor: pointer;
   font-weight: 600;
   font-size: 0.9em;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
   font-family: "Montserrat", sans-serif; 
-  text-decoration: none; /* <-- ADICIONE ISTO */
+  text-decoration: none;
 }
 
 .login-btn:hover {
   background-color: #EA580C;
+  transform: translateY(-1px);
+}
+
+/* NOVO: Estilo para o botão de Logout (diferente do Login) */
+.logout-btn {
+  background-color: #EF4444; /* Vermelho suave para "Sair" */
+}
+
+.logout-btn:hover {
+  background-color: #DC2626; 
 }
 
 .dropdown-container {

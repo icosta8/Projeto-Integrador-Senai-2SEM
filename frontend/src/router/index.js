@@ -5,7 +5,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 // --- Suas Views de Cliente ---
 import HomeView from '../views/HomeView.vue'
 import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
+import Carrinho from '../views/carrinho.vue'
 
 // --- Novas Views e Layout de Admin ---
 import AdminLayout from '../components/admin/AdminLayout.vue'
@@ -31,12 +33,23 @@ const routes = [
     component: Login
   },
   {
+    path: '/cadastro',
+    name: 'register',
+    component: Register
+  },
+  {
     path: '/produto/:id',
     name: 'product-detail',
     component: ProductDetailView,
     props: true
   },
 
+  {
+    path: '/carrinho',
+    name: 'carrinho',
+    component: Carrinho
+  },
+  
   // --- NOVAS ROTAS DE ADMIN ---
   {
     path: '/admin',
@@ -68,6 +81,16 @@ const routes = [
         component: () => import('../views/admin/AdminPedidosView.vue')
       },
       {
+        path: 'dispararPedidos',
+        name: 'AdminDispararPedidos',
+        component: () => import('../views/admin/AdminDispararPedidos.vue')
+      },
+      {
+        path: '/admin/KPI',
+        name: 'AdminKPIView',
+        component: () => import('../views/admin/AdminKPIView.vue')
+      },
+      {
         path: 'usuarios', // Acessível em /admin/usuarios (RF-35)
         name: 'AdminUsuarios',
         // Você precisará criar o arquivo 'src/views/admin/AdminUsuariosView.vue'
@@ -77,7 +100,7 @@ const routes = [
         path: 'usuarios/novo', // A URL será /admin/usuarios/novo
         name: 'AdminUserNew',
         component: () => import('../views/admin/AdminUserFormView.vue')
-      }
+      },
     ]
   }
 ]

@@ -1,18 +1,29 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import StatCard from '@/components/admin/StatCard.vue'
 import { Package, Users, ShoppingCart, DollarSign } from 'lucide-vue-next'
+import { useUsuarioStore } from '@/stores/usuario'
 
-// Dados de exemplo
-const adminName = "Gabriela"
+const usuarioStore = useUsuarioStore()
 
-const stats = ref([
+// Nome do admin
+const adminName = ref('Administrador')
+onMounted(() => {
+  adminName.value = usuarioStore.usuario?.nome || 'Administrador'
+})
+
+// Número de usuários cadastrados (reativo)
+const usuariosCadastrados = computed(() => usuarioStore.usuarios.length)
+
+// Estatísticas
+const stats = computed(() => [
   { id: 1, title: 'Pedidos pendentes', value: 15, subtitle: 'Na última semana', icon: Package },
-  { id: 2, title: 'Usuários novos', value: 28, subtitle: 'Na última semana', icon: Users },
+  { id: 2, title: 'Usuários novos', value: usuariosCadastrados.value, subtitle: 'Na última semana', icon: Users },
   { id: 3, title: 'Compras realizadas', value: 46, subtitle: 'Na última semana', icon: ShoppingCart },
   { id: 4, title: 'Lucro', value: 'R$ 8.563,56', subtitle: 'Lucro total', icon: DollarSign }
 ])
 
+// Pedidos recentes
 const recentOrders = ref([
   { id: 1, client: 'Thainara Marques', date: '07/10/2025 20:27:58', quantity: 5, total: 'R$ 150,00', status: 'Pendente' },
   { id: 2, client: 'Isaque Costa', date: '07/10/2025 18:45:12', quantity: 2, total: 'R$ 75,50', status: 'Aprovado' },
@@ -20,6 +31,7 @@ const recentOrders = ref([
   { id: 4, client: 'Miguel de Freitas', date: '06/10/2025 22:10:47', quantity: 1, total: 'R$ 49,90', status: 'Entregue' }
 ])
 </script>
+
 
 <template>
   <div class="dashboard-view">

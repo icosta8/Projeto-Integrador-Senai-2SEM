@@ -1,6 +1,24 @@
 <script setup>
-import { RouterView, RouterLink } from 'vue-router'
+import { RouterView, RouterLink, useRouter } from 'vue-router'
 import { UserCircle } from 'lucide-vue-next'
+import { useUsuarioStore } from '../../stores/usuario';
+import { onMounted, ref } from 'vue';
+const usuarioStore = useUsuarioStore();
+const router = useRouter();
+
+const adminName = ref('Administrador')
+onMounted(() => {
+  adminName.value = usuarioStore.usuario?.nome || 'Administrador'
+})
+
+async function desconectar(){
+  await usuarioStore.logout()
+  if(usuarioStore.logout()){
+    alert('Usuário desconectado com sucesso!.')
+    router.push('/login')
+  }
+}
+
 </script>
 
 <template>
@@ -12,12 +30,14 @@ import { UserCircle } from 'lucide-vue-next'
         <RouterLink to="/admin/pedidos">Pedidos</RouterLink>
         <RouterLink to="/admin/produtos">Produtos</RouterLink>
         <RouterLink to="/admin/usuarios">Usuários</RouterLink>
+        <RouterLink to="/admin/dispararPedidos">Disparar Pedidos</RouterLink>
+        <RouterLink to="/admin/kpi">KPI</RouterLink>
       </nav>
       
       <div class="nav-actions">
         <div class="admin-profile">
-          <span>Gabriela</span>
-          <UserCircle :size="28" class="profile-icon" />
+          <span>{{adminName}}</span>
+          <UserCircle :size="28" class="profile-icon" @click="desconectar" />
         </div>
       </div>
     </header>
