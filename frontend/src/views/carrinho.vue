@@ -3,14 +3,14 @@
     <div class="carrinho-card">
       <h1>Seu Carrinho</h1>
       
-      <!-- NOVO: Botão para alternar a visibilidade do histórico -->
+      <!-- Botão para alternar a visibilidade do histórico -->
       <div v-if="historicoRecibos.length > 0" class="header-actions">
           <button @click="mostrarHistorico = !mostrarHistorico" class="history-toggle-btn">
               {{ mostrarHistorico ? 'Esconder' : 'Ver' }} Histórico de Pedidos ({{ historicoRecibos.length }})
           </button>
       </div>
 
-      <!-- Mensagem de Feedback (Substitui o Alert) -->
+      <!-- Mensagem de Feedback -->
       <div v-if="mensagemFeedback" :class="['feedback-message', { 'success': !itens.length }]" >
         {{ mensagemFeedback }}
       </div>
@@ -64,7 +64,7 @@
 
     </div>
 
-    <!-- Seção de Histórico de Recibos (AGORA USANDO mostrarHistorico) -->
+    <!-- Seção de Histórico de Recibos -->
     <div v-if="historicoRecibos.length > 0 && mostrarHistorico" class="carrinho-card mt-8">
       <h2>Histórico de Pedidos</h2>
       <div v-for="recibo in historicoRecibos" :key="recibo.id" class="recibo-item">
@@ -73,7 +73,6 @@
           <span class="recibo-total">R$ {{ recibo.total.toFixed(2) }}</span>
         </div>
         <small>{{ new Date(recibo.data).toLocaleDateString() }} - {{ recibo.itens.length }} itens</small>
-        <!-- Você pode expandir aqui para mostrar detalhes do item -->
       </div>
     </div>
   </div>
@@ -82,15 +81,17 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useCarrinhoStore } from '../stores/carrinho'
+import { useSucoStore } from '../stores/produtos'
 
 const store = useCarrinhoStore()
+const sucoStore = useSucoStore()
 
 const itens = computed(() => store.itens)
 const total = computed(() => store.total)
 const historicoRecibos = computed(() => store.historicoRecibos) // Importa o histórico
 
 const mensagemFeedback = ref(null) // Estado para mensagens de sucesso/erro
-const mostrarHistorico = ref(false) // NOVO: Estado para controlar a visibilidade do histórico
+const mostrarHistorico = ref(false) // Estado para controlar a visibilidade do histórico
 
 onMounted(() => {
   // Carrega o carrinho do servidor após a montagem

@@ -40,8 +40,6 @@ export const useCarrinhoStore = defineStore('carrinho', {
         },
 
         async carregarCarrinhoServidor() {
-            // REMOVEMOS A CHAMADA AXIOS PARA EVITAR ERRO 404
-            /*
             try {
                 const res = await axios.get('http://localhost:3000/api/carrinho/')
                 this.carrinho = res.data.map(item => ({
@@ -53,7 +51,6 @@ export const useCarrinhoStore = defineStore('carrinho', {
             } catch (err) {
                 console.error("Erro ao carregar carrinho:", err)
             }
-            */
         },
 
         // NOVO: Ação para finalizar a compra e gerar um recibo
@@ -74,7 +71,7 @@ export const useCarrinhoStore = defineStore('carrinho', {
                 itens: JSON.parse(JSON.stringify(this.carrinho)), 
                 total: this.total // Usa o getter total
             };
-
+        
             // 3. Adiciona ao estado de recibos
             this.recibos.unshift(novoRecibo); // Adiciona no início para os mais recentes aparecerem primeiro
 
@@ -84,16 +81,14 @@ export const useCarrinhoStore = defineStore('carrinho', {
             // 5. Limpa o carrinho
             this.limpar(false); // Chama limpar, mas sem a tentativa de limpar o backend (passamos false para ignorar o axios)
 
-            // 6. Tenta enviar para o backend (opcional, manter comentado para evitar 404)
-            /*
+            
             try {
-                await axios.post('http://localhost:3000/api/checkout', novoRecibo);
+               const res = await axios.post('http://localhost:3000/api/clp/escrever-pedido', this.carrinho);
+               return res
             } catch (error) {
-                console.error("Erro ao enviar recibo para o backend:", error);
+                console.error("Erro ao enviar pedido para o backend:", error);
             }
-            */
-
-            return novoRecibo;
+            
         },
 
         // **Ação ADICIONAR CORRIGIDA**
@@ -125,8 +120,6 @@ export const useCarrinhoStore = defineStore('carrinho', {
 
             this.salvar();
 
-            // 3. Remove a tentativa de enviar para o backend para evitar o erro 404
-            /*
             try {
                 await axios.post('http://localhost:3000/api/carrinho/adicionar', {
                     produtoId: itemBase.produtoId,
@@ -139,8 +132,6 @@ export const useCarrinhoStore = defineStore('carrinho', {
                 console.error("Erro ao enviar para o backend:", error);
                 return false;
             }
-            */
-            
             // Já que o processo local foi bem-sucedido, retornamos true.
             return true; 
         },
@@ -163,12 +154,9 @@ export const useCarrinhoStore = defineStore('carrinho', {
             this.carrinho = []
             localStorage.removeItem('carrinho')
             
-            // REMOVEMOS A CHAMADA AXIOS PARA EVITAR ERRO 404 (agora controlado)
-            /*
             if (clearBackend) {
                 axios.post('http://localhost:3000/api/carrinho/limpar')
             }
-            */
         }
     }
 })

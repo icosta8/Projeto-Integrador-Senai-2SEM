@@ -62,14 +62,14 @@ export const useChartStore = defineStore('chart', {
   actions: {
     atualizarGraficos(dados) {
 
-      // Usando as chaves EXATAS do CLP (com aspas!)
-      const estoque = Number(dados['"status"."estoqueProd"'] ?? 0)
-      const pcsBoas = Number(dados['"status"."mesPCsBoas"'] ?? 0)
-      const pcsRuins = Number(dados['"status"."mesPCsRuins"'] ?? 0)
+      // Usando as chaves EXATAS do CLP 
+      const estoque = dados.status.estoqueProd ?? 0
+      const pcsBoas = dados.status.mesPCsBoas ?? 0
+      const pcsRuins = dados.status.mesPCsRuins ?? 0
 
       // Atualiza KPI
-    this.pecasBoas.datasets[0].data = [dados.status.mesPCsBoas]
-    this.pecasRuins.datasets[0].data = [dados.status.mesPCsRuins]
+    this.pecasBoas.datasets[0].data = [dados.status.mesPcsBoas]
+    this.pecasRuins.datasets[0].data = [dados.status.mesPcsRuins]
     this.estoque.datasets[0].data = [dados.status.estoqueProd]
     },
 

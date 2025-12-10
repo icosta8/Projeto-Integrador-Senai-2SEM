@@ -55,7 +55,6 @@ const carrinhoStore = useCarrinhoStore();
 const sucoStore = useSucoStore();
 const color = ref("");
 
-// --- Utility function for price formatting ---
 function formatCurrency(value) {
     if (typeof value !== 'number') {
         // Retorna um valor seguro se não for um número
@@ -114,7 +113,7 @@ watch(productStatus, (status) => {
 
 
 async function salvarItem(){
-  // product.value.preco AGORA É UM NÚMERO
+ 
   const itemParaCarrinho = {
     produtoId: route.params.id, 
     nome: product.value.tipo, 
@@ -136,7 +135,7 @@ const juiceData = {
   cereja: {
    tipo: 'Suco de Cereja Integral',
    description: 'A cereja é uma fruta rica em antioxidantes e vitamina C, importante para o fortalecimento do sistema imunológico. Composto também por vitaminas A e do complexo B.',
-   preco: 23.99, // CORRIGIDO: Armazenando apenas o valor numérico
+   preco: 23.99, 
    image: cherryJuiceImg,
    color: '#DB3D6C',
    bgColor: '#FDF0F4',
@@ -146,7 +145,7 @@ const juiceData = {
   ameixa: {
     tipo: 'Suco de Ameixa Integral',
     description: 'Rico em fibras, o suco de ameixa é um ótimo aliado do sistema digestivo. Fonte de vitaminas K e potássio, ajudando a regular o organismo.',
-    preco: 21.99, // CORRIGIDO: Armazenando apenas o valor numérico
+    preco: 21.99, 
     image: plumJuiceImg,
     color: '#7B4DAB',
     bgColor: '#F3EEF9'
@@ -154,7 +153,7 @@ const juiceData = {
   laranja: {
     tipo: 'Suco de Laranja Integral',
     description: 'O clássico suco de laranja! Famoso pela alta concentração de Vitamina C, é perfeito para começar o dia com energia e saúde. 100% natural.',
-    preco: 19.99, // CORRIGIDO: Armazenando apenas o valor numérico
+    preco: 19.99, 
     image: orangeJuiceImg,
     color: '#FF9900',
     bgColor: '#FFF8ED'

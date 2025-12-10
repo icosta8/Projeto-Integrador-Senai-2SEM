@@ -200,7 +200,7 @@ export const useSucoStore = defineStore('suco', {
         // prepara payload (ex: lista de itens)
         const payload = { itens: this.cart.map(i => ({ tipo: i.tipo, quantidade: i.quantidade, preco: i.preco })) }
 
-        const res = await axios.post('http://localhost:3000/api/sucos/pedir-suco', payload)
+        const res = await axios.post('http://localhost:3000/api/clp/escrever-pedido', payload)
 
         // se backend confirmar, atualiza estoque local
         for (const item of this.cart) {
