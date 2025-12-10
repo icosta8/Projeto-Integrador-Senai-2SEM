@@ -7,8 +7,14 @@ function mapearNodeId(db, tag) {
     return `ns=${tagInfo.ns};s="${db}"."${tag}"`;
 }
 
+function delay(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
+
 async function lerTags() {
     const { client, session } = await conectarOPCUA();
+
+    delay(500);
 
     try {
         const nodesToRead = [];

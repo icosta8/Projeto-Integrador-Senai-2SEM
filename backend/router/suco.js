@@ -1,8 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const Suco = require('../models/Suco');
-const cache = require('../services/clp_cache');
 const axios = require('axios');
+const { lerTags } = require('../services/server_opc_client');
 
 const MAPA_PRODUTOS = {
   "cereja": 0,
@@ -48,10 +49,11 @@ router.post('/pedir-suco', async (req, res) => {
     }
 
     // Status do CLP
-    const falha = cache.valores[`"status"."falhaAtiva"`];
-    const status = cache.valores[`"status"."geral"`];
-    const estoque = cache.valores[`"status"."estoqueProd"`];
+    const falha = await lerTags("status", "falhaAtiva");
+    const status = await lerTags("status", "geral");
+    const estoque = await lerTags("status", "estoqueProd")
 
+    /*
     if (falha === true) {
       return res.status(400).json({ error: "Máquina em falha. Reinicie o sistema." });
     }
@@ -64,9 +66,11 @@ router.post('/pedir-suco', async (req, res) => {
       return res.status(500).json({ error: "CLP não retornou estoque válido." });
     }
 
+    */
     if (estoque[produtoIndex] < quantidade) {
       return res.status(400).json({ error: "Estoque insuficiente no CLP." });
     }
+    
 
     await axios.post("http://localhost:3000/api/clp/escrever-pedido", {
       produto: produtoIndex,

@@ -11,8 +11,8 @@ const tagsCLP = {
     "mesUltimoCiclo": {"ns": 3, "type": "Real"},
     "mesTempInicio": {"ns": 3, "type": "DateTime"},
     "mesTempFim": {"ns": 3, "type": "DateTime"},
-    "mesPCsBoas": {"ns": 3, "type": "Int16"},
-    "mesPCsRuins": {"ns": 3, "type": "Int16"}
+    "mesPcsBoas": {"ns": 3, "type": "Int32"},
+    "mesPcsRuins": {"ns": 3, "type": "Int32"}
   },
   "ack": {
     "pedidoACK": {"ns": 3, "type": "Boolean"},
@@ -23,7 +23,7 @@ const tagsCLP = {
     "falhaACK": {"ns": 3, "type": "Boolean"}
   },
   "pedido": {
-    "op": {"ns": 3, "type": "DoubleInteger"},
+    "op": {"ns": 3, "type": "Int32"},
     "produto": {"ns": 3, "type": "Int16"},
     "quant": {"ns": 3, "type": "Int16"}
   },

@@ -22,17 +22,18 @@ async function servidores() {
       await clp_comando.enviarComando();
       console.log('CLP Comando ativo');
     }
-
+    /*
     if (typeof opc_mes.monitorarFimCiclo === 'function') {
       await opc_mes.monitorarFimCiclo();
       console.log('MES monitorando fim de ciclo');
     }
-
+    */
+   
     if (typeof update_opc.iniciarOPCService === 'function') {
       await update_opc.iniciarOPCService();
       console.log('Atualização OPC em execução');
     }
-
+    
     console.log('Todos os servidores estão ativos e em execução.');
   } catch (erro) {
     console.error('Falha ao iniciar servidores:', erro.message || erro);
