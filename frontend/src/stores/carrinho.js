@@ -81,9 +81,17 @@ export const useCarrinhoStore = defineStore('carrinho', {
             // 5. Limpa o carrinho
             this.limpar(false); // Chama limpar, mas sem a tentativa de limpar o backend (passamos false para ignorar o axios)
 
-            
+            const mapa_produtos = {
+                'Suco de Cereja Integral': 0,
+                'Suco de Ameixa Integral': 1,
+                'Suco de Laranja Integral': 2
+            }
+
             try {
-               const res = await axios.post('http://localhost:3000/api/clp/escrever-pedido', this.carrinho);
+               const res = await axios.post('http://localhost:3000/api/clp/escrever-pedido', {
+                produto: mapa_produtos[item.nome],
+                quantidade: item.quantidade
+               });
                return res
             } catch (error) {
                 console.error("Erro ao enviar pedido para o backend:", error);
@@ -91,7 +99,6 @@ export const useCarrinhoStore = defineStore('carrinho', {
             
         },
 
-        // **Ação ADICIONAR CORRIGIDA**
         async adicionar(item) {
             // 1. Converte o preço de entrada para número (trata string 'R$ 23,99' ou string '23.99')
             const numPreco = parsePrice(item.preco);

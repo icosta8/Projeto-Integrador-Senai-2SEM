@@ -6,9 +6,9 @@ export const useSucoStore = defineStore('suco', {
   state: () => ({
     // dados iniciais (podem ser sobrescritos por carregarSucos)
     sucos: [
-      { tipo: 'cereja', preco: 2.0, quantidade: 10 },
-      { tipo: 'laranja', preco: 2.0, quantidade: 10 },
-      { tipo: 'ameixa', preco: 4.0, quantidade: 10 }
+      { tipo: 'cereja', preco: 23.99, quantidade: 10 },
+      { tipo: 'laranja', preco: 19.99, quantidade: 10 },
+      { tipo: 'ameixa', preco: 21.99, quantidade: 10 }
     ],
 
     // carrinho local: { tipo, preco, quantidade }
@@ -63,7 +63,7 @@ export const useSucoStore = defineStore('suco', {
         if (Array.isArray(res.data)) {
           this.sucos = res.data
         } else {
-          // caso o backend retorne objeto, ajuste como precisar
+          // caso o backend retorne objeto
           console.warn('carregarSucos: formato inesperado', res.data)
         }
 
@@ -96,8 +96,6 @@ export const useSucoStore = defineStore('suco', {
             this.conectadoMES = false
           }, timeoutOffline)
 
-          // aqui você pode processar dados do MES e atualizar gráficos/estoque se quiser
-          // ex: if (res.data.estoqueProd) => atualizar algum estado
         } catch (err) {
           console.warn('MES fetch failed', err)
           this.conectadoMES = false

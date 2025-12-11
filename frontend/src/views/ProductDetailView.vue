@@ -114,14 +114,14 @@ watch(productStatus, (status) => {
 
 async function salvarItem(){
  
-  const itemParaCarrinho = {
+  const item = {
     produtoId: route.params.id, 
     nome: product.value.tipo, 
     preco: product.value.preco, 
     quantidade: 1, 
     image: product.value.image 
   };
-  const salvar = await carrinhoStore.adicionar(itemParaCarrinho);
+  const salvar = await carrinhoStore.adicionar(item);
 
   if(!salvar){
     displayNotification("Não foi possível adicionar o produto ao carrinho. (Verifique o preço)", true);
@@ -139,8 +139,7 @@ const juiceData = {
    image: cherryJuiceImg,
    color: '#DB3D6C',
    bgColor: '#FDF0F4',
-   quantidade: 1,
-   productId: 'Cereja'
+   quantidade: 1
   },
   ameixa: {
     tipo: 'Suco de Ameixa Integral',
